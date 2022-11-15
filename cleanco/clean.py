@@ -113,5 +113,6 @@ def custom_basename(name, terms, suffix=True, prefix=False, middle=False, **kwar
     return strip_tail(" ".join(nparts))
 
 
-# convenience for most common use cases that don't parametrize base name extraction
-basename = functools.partial(custom_basename, terms=prepare_default_terms())
+def basename(name, suffix=True, prefix=True, middle=False):
+    intermediate = custom_basename(name, prepare_default_terms(), suffix=suffix, prefix=prefix, middle=middle)
+    return custom_basename(intermediate, prepare_default_terms(), suffix=suffix, prefix=prefix, middle=middle)
