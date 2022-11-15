@@ -13,11 +13,11 @@ Daddy & Sons
 
 import functools
 import operator
-from collections import OrderedDict
 import re
 import unicodedata
-from .termdata import terms_by_type, terms_by_country
+
 from .non_nfkd_map import NON_NFKD_MAP
+from .termdata import country_name_by_country, terms_by_country, terms_by_type
 
 tail_removal_rexp = re.compile(r"[^\.\w]+$", flags=re.UNICODE)
 
@@ -26,7 +26,8 @@ def get_unique_terms():
     "retrieve all unique terms from termdata definitions"
     ts = functools.reduce(operator.iconcat, terms_by_type.values(), [])
     cs = functools.reduce(operator.iconcat, terms_by_country.values(), [])
-    return set(ts + cs)
+    cc = functools.reduce(operator.iconcat, country_name_by_country.values(), [])
+    return set(ts + cs + cc)
 
 
 def remove_accents(t):
