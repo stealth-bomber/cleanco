@@ -42,7 +42,7 @@ def remove_accents(t):
 
 
 def strip_punct(t):
-    return t.replace(".", "").replace(",", "").replace("-", "")
+    return t.replace(".", "").replace(",", "").replace("-", "").replace("(", "").replace(")", "")
 
 
 def normalize_terms(terms):
