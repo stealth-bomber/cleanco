@@ -15,7 +15,7 @@ import functools
 import operator
 import re
 import unicodedata
-from typing import Optional, Set
+from typing import List, Optional, Set
 
 from .non_nfkd_map import NON_NFKD_MAP
 from .termdata import country_codes, country_name_by_country, terms_by_country, terms_by_type
@@ -79,7 +79,7 @@ def prepare_default_terms(country: Optional[str] = None):
     return [(len(tp), tp) for tp in sntermparts]
 
 
-def custom_basename(name, terms, suffix=True, prefix=False, middle=False, **kwargs):
+def custom_basename(name, terms, suffix=True, prefix=False, middle=False, country_names: List[str] = [], **kwargs):
     "return cleaned base version of the business name"
 
     name = strip_tail(name)
@@ -115,11 +115,23 @@ def custom_basename(name, terms, suffix=True, prefix=False, middle=False, **kwar
                     del nnparts[idx + 1]
                     del nparts[idx + 1]
 
+    for country_name in country_names:
+        if nparts and nparts[-1].lower() == country_name.lower():
+            # In specific cases (e.g. "XXX of Sweden"), we should leave the country name
+            if len(nparts) >= 2 and nparts[-2] == 'of':
+                continue
+
+            nnparts = nnparts[:-1]
+            nparts = nparts[:-1]
+
     return strip_tail(" ".join(nparts))
 
 
 # convenience for most common use cases that don't parametrize base name extraction
 def basename(name, suffix=True, prefix=True, middle=False, country=None):
     no_parenthesis = parenthesis_removal_rexp.sub(' ', name).strip()
-    intermediate = custom_basename(no_parenthesis, prepare_default_terms(country_codes.get(country, country)), suffix=suffix, prefix=prefix, middle=middle)
-    return custom_basename(intermediate, prepare_default_terms(country_codes.get(country, country)), suffix=suffix, prefix=prefix, middle=middle)
+    country_name = country_codes.get(country, country)
+    terms = prepare_default_terms(country_name)
+    country_names = country_name_by_country.get(country_name, [])
+    intermediate = custom_basename(no_parenthesis, terms, suffix=suffix, prefix=prefix, middle=middle, country_names=country_names)
+    return custom_basename(intermediate, terms, suffix=suffix, prefix=prefix, middle=middle, country_names=country_names)
