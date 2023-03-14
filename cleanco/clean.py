@@ -18,9 +18,10 @@ import unicodedata
 from typing import Optional, Set
 
 from .non_nfkd_map import NON_NFKD_MAP
-from .termdata import country_codes, terms_by_country, terms_by_type
+from .termdata import country_codes, country_name_by_country, terms_by_country, terms_by_type
 
 tail_removal_rexp = re.compile(r"[^\.\w]+$", flags=re.UNICODE)
+parenthesis_removal_rexp = re.compile(r"\s*\(.*\)\s*")
 
 
 def get_unique_terms(country: Optional[str] = None) -> Set[str]:
@@ -30,7 +31,8 @@ def get_unique_terms(country: Optional[str] = None) -> Set[str]:
     "retrieve all unique terms from termdata definitions"
     ts = functools.reduce(operator.iconcat, terms_by_type.values(), [])
     cs = functools.reduce(operator.iconcat, terms_by_country.values(), [])
-    return set(ts + cs)
+    cc = functools.reduce(operator.iconcat, country_name_by_country.values(), [])
+    return set(ts + cs + cc)
 
 
 def remove_accents(t):
@@ -38,11 +40,11 @@ def remove_accents(t):
     nfkd_form = unicodedata.normalize('NFKD', t.casefold())
     return ''.join(
         NON_NFKD_MAP[c]
-            if c in NON_NFKD_MAP
+        if c in NON_NFKD_MAP
         else c
-            for part in nfkd_form for c in part
-            if unicodedata.category(part) != 'Mn'
-        )
+        for part in nfkd_form for c in part
+        if unicodedata.category(part) != 'Mn'
+    )
 
 
 def strip_punct(t):
@@ -55,7 +57,7 @@ def normalize_terms(terms):
 
 
 def strip_tail(name):
-    "get rid of all trailing non-letter symbols except the dot"
+    "get rid of all trailing non-letter symbols except the dot and closing parenthesis"
     match = re.search(tail_removal_rexp, name)
     if match is not None:
         name = name[: match.span()[0]]
@@ -103,22 +105,21 @@ def custom_basename(name, terms, suffix=True, prefix=False, middle=False, **kwar
             if termsize > 1:
                 sizediff = nnsize - termsize
                 if sizediff > 1:
-                    for i in range(0, nnsize-termsize+1):
-                        if termparts == nnparts[i:i+termsize]:
-                            del nnparts[i:i+termsize]
-                            del nparts[i:i+termsize]
+                    for i in range(0, nnsize - termsize + 1):
+                        if termparts == nnparts[i:i + termsize]:
+                            del nnparts[i:i + termsize]
+                            del nparts[i:i + termsize]
             else:
                 if termparts[0] in nnparts[1:-1]:
                     idx = nnparts[1:-1].index(termparts[0])
-                    del nnparts[idx+1]
-                    del nparts[idx+1]
-
+                    del nnparts[idx + 1]
+                    del nparts[idx + 1]
 
     return strip_tail(" ".join(nparts))
 
 
 # convenience for most common use cases that don't parametrize base name extraction
-def basename(name, terms=None, country=None, **kwargs):
-    if terms is None:
-        terms = prepare_default_terms(country_codes.get(country, country))
-    return custom_basename(name, terms=terms, **kwargs)
+def basename(name, suffix=True, prefix=True, middle=False, country=None):
+    no_parenthesis = parenthesis_removal_rexp.sub(' ', name).strip()
+    intermediate = custom_basename(no_parenthesis, prepare_default_terms(country_codes.get(country, country)), suffix=suffix, prefix=prefix, middle=middle)
+    return custom_basename(intermediate, prepare_default_terms(country_codes.get(country, country)), suffix=suffix, prefix=prefix, middle=middle)

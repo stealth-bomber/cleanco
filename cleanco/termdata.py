@@ -1,47 +1,40 @@
 terms_by_type = {
-   'Corporation': ['company', 'incorporated', 'corporation', 'corp.', 'corp', 'inc',
-      '& co.', '& co', 'inc.', 's.p.a.', 'n.v.', 'a.g.', 'ag', 'nuf', 's.a.', 's.f.',
-      'oao', 'co.', 'co'
-   ],
-   'General Partnership': ['soc.col.', 'stg', 'd.n.o.', 'ltda.', 'v.o.s.', 'a spol.',
-      u've\xc5\x99. obch. spol.', 'kgaa', 'o.e.', 's.f.', 's.n.c.', 's.a.p.a.', 'j.t.d.',
-      'v.o.f.', 'sp.j.', 'og', 'sd', ' i/s', 'ay', 'snc', 'oe', 'bt.', 's.s.', 'mb',
-      'ans', 'da', 'o.d.', 'hb', 'pt'
-   ],
-   'Joint Stock / Unlimited': ['unltd', 'ultd', 'sal', 'unlimited', 'saog', 'saoc', 'aj',
-      'yoaj', 'oaj', 'akc. spol.', 'a.s.'
-   ],
-   'Joint Venture': ['esv', 'gie', 'kv.', 'qk'],
-   'Limited': ['pty. ltd.', 'pty ltd', 'ltd', 'l.t.d.', 'bvba', 'd.o.o.', 'ltda', 'gmbh',
-      'g.m.b.h', 'kft.', 'kht.', 'zrt.', 'ehf.', 's.a.r.l.', 'd.o.o.e.l.', 's. de r.l.',
-      'b.v.', 'tapui',
-      'sp. z.o.o.', 'sp. z o.o.', 'spółka z o.o.',
-      's.r.l.', 's.l.', 's.l.n.e.', 'ood', 'oy', 'rt.',
-      'teo', 'uab', 'scs', 'sprl', 'limited', 'bhd.', 'sdn. bhd.', 'sdn bhd', 'as',
-      'lda.', 'tov', 'pp'
-   ],
-   'Limited Liability Company': ['pllc', 'llc', 'l.l.c.', 'plc.', 'plc', 'hf.', 'oyj',
-      'a.e.', 'nyrt.', 'p.l.c.', 'sh.a.', 's.a.', 's.r.l.', 'srl.', 'srl', 'aat', '3at', 'd.d.',
-      's.r.o.', 'spol. s r.o.', 's.m.b.a.', 'smba', 'sarl', 'nv', 'sa', 'aps',
-      'a/s', 'p/s', 'sae', 'sasu', 'eurl', 'ae', 'cpt', 'as', 'ab', 'asa', 'ooo', 'dat',
-      'vat', 'zat', 'mchj', 'a.d.'
-   ],
-   'Limited Liability Limited Partnership': ['lllp', 'l.l.l.p.'],
-   'Limited Liability Partnership': ['llp', 'l.l.p.', 'sp.p.', 's.c.a.', 's.c.s.'],
-   'Limited Partnership': ['gmbh & co. kg', 'lp', 'l.p.', 's.c.s.',
-      's.c.p.a', 'comm.v', 'k.d.', 'k.d.a.', 's. en c.', 'e.e.', 's.a.s.', 's. en c.',
-      'c.v.', 's.k.a.', 'sp.k.', 's.cra.', 'ky', 'scs', 'kg', 'kd', 'k/s', 'ee', 'secs',
-      'kda', 'ks', 'kb','kt'
-   ],
-   'Mutual Fund': ['sicav'],
-   'No Liability': ['nl'],
-   'Non-Profit': ['vzw', 'ses.', 'gte.'],
-   'Private Company': ['private', 'pte', 'xk'],
-   'Professional Corporation': ['p.c.', 'vof', 'snc'],
-   'Professional Limited Liability Company': ['pllc', 'p.l.l.c.'],
-   'Sole Proprietorship': ['e.u.', 's.p.', 't:mi', 'tmi', 'e.v.', 'e.c.', 'et', 'obrt',
-      'fie', 'ij', 'fop', 'xt'
-   ]
+    'Corporation': ['company', 'incorporated', 'corporation', 'corp.', 'corp', 'inc',
+                    '& co.', '& co', 'inc.', 's.p.a.', 'n.v.', 'a.g.', 'ag', 'nuf', 's.a.', 's.f.',
+                    'oao', 'co.', 'co'],
+    'General Partnership': ['soc.col.', 'stg', 'd.n.o.', 'ltda.', 'v.o.s.', 'a spol.',
+                            u've\xc5\x99. obch. spol.', 'kgaa', 'o.e.', 's.f.', 's.n.c.', 's.a.p.a.', 'j.t.d.',
+                            'v.o.f.', 'sp.j.', 'og', 'sd', ' i/s', 'ay', 'snc', 'oe', 'bt.', 's.s.', 'mb',
+                            'ans', 'da', 'o.d.', 'hb', 'pt'],
+    'Joint Stock / Unlimited': ['unltd', 'ultd', 'sal', 'unlimited', 'saog', 'saoc', 'aj',
+                                'yoaj', 'oaj', 'akc. spol.', 'a.s.'],
+    'Joint Venture': ['esv', 'gie', 'kv.', 'qk'],
+    'Limited': ['pty. ltd.', 'pty ltd', 'ltd', 'l.t.d.', 'bvba', 'd.o.o.', 'ltda', 'gmbh',
+                'g.m.b.h', 'kft.', 'kht.', 'zrt.', 'ehf.', 's.a.r.l.', 'd.o.o.e.l.', 's. de r.l.',
+                'b.v.', 'tapui',
+                'sp. z.o.o.', 'sp. z o.o.', 'spółka z o.o.',
+                's.r.l.', 's.l.', 's.l.n.e.', 'ood', 'oy', 'rt.',
+                'teo', 'uab', 'scs', 'sprl', 'limited', 'bhd.', 'sdn. bhd.', 'sdn bhd', 'as',
+                'lda.', 'tov', 'pp'],
+    'Limited Liability Company': ['pllc', 'llc', 'l.l.c.', 'plc.', 'plc', 'hf.', 'oyj',
+                                  'a.e.', 'nyrt.', 'p.l.c.', 'sh.a.', 's.a.', 's.r.l.', 'srl.', 'srl', 'aat', '3at', 'd.d.',
+                                  's.r.o.', 'spol. s r.o.', 's.m.b.a.', 'smba', 'sarl', 'nv', 'sa', 'aps',
+                                  'a/s', 'p/s', 'sae', 'sasu', 'eurl', 'ae', 'cpt', 'as', 'ab', 'asa', 'ooo', 'dat',
+                                  'vat', 'zat', 'mchj', 'a.d.'],
+    'Limited Liability Limited Partnership': ['lllp', 'l.l.l.p.'],
+    'Limited Liability Partnership': ['llp', 'l.l.p.', 'sp.p.', 's.c.a.', 's.c.s.'],
+    'Limited Partnership': ['gmbh & co. kg', 'lp', 'l.p.', 's.c.s.',
+                            's.c.p.a', 'comm.v', 'k.d.', 'k.d.a.', 's. en c.', 'e.e.', 's.a.s.', 's. en c.',
+                            'c.v.', 's.k.a.', 'sp.k.', 's.cra.', 'ky', 'scs', 'kg', 'kd', 'k/s', 'ee', 'secs',
+                            'kda', 'ks', 'kb', 'kt'],
+    'Mutual Fund': ['sicav'],
+    'No Liability': ['nl'],
+    'Non-Profit': ['vzw', 'ses.', 'gte.'],
+    'Private Company': ['private', 'pte', 'xk'],
+    'Professional Corporation': ['p.c.', 'vof', 'snc'],
+    'Professional Limited Liability Company': ['pllc', 'p.l.l.c.'],
+    'Sole Proprietorship': ['e.u.', 's.p.', 't:mi', 'tmi', 'e.v.', 'e.c.', 'et', 'obrt',
+                            'fie', 'ij', 'fop', 'xt']
 }
 
 terms_by_country = {
@@ -75,7 +68,7 @@ terms_by_country = {
    'Ecuador': ['s.a.', 'c.a.', 'sa', 'ep'],
    'Egypt': ['sae'],
    'Estonia': ['fie'],
-   'Finland': ['ab', 't:mi', 'tmi', 'as oy', 'as.oy', 'ay', 'ky', 'oy', 'oyj', 'ok'],
+   'Finland': ['ab', 't:mi', 'tmi', 'as oy', 'as.oy', 'ay', 'ky', 'oy', 'oyj', 'ok', 'ab ltd'],
    'France': ['sicav', 'sarl', 'sogepa', 'ei', 'eurl', 'sasu', 'fcp', 'gie', 'sep', 'snc',
       'scs', 'sca', 'scop', 'sem', 'sas'
    ],
@@ -141,6 +134,13 @@ terms_by_country = {
       'co', 'lp'
    ],
    'Uzbekistan': ['mchj', 'qmj', 'aj', 'oaj', 'yoaj', 'xk', 'xt', 'ok', 'uk', 'qk']
+}
+
+country_name_by_country = {
+    'Finland': ['finland', 'suomi'],
+    'Sweden': ['sweden', 'sverige'],
+    'Norway': ['norway', 'norge'],
+    'Luxembourg': ['luxembourg']
 }
 
 country_codes = {
