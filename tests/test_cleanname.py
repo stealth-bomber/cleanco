@@ -1,20 +1,21 @@
 # encoding: utf-8
 
+from typing import Optional
+
 import pytest
 
-from cleanco import basename
+from cleanco import basename, clean
 
 
 def test_deterministic_terms(monkeypatch):
-    """prepare_default_terms should always return the same list (even for different ordering in get_unique_terms)"""
-    from cleanco import clean
-    with monkeypatch.context() as m:
-        mock_terms = ["aaa", "bbb", "ccc"]
-        m.setattr(clean, "get_unique_terms", lambda: mock_terms)
-        res1 = clean.prepare_default_terms()
-        m.setattr(clean, "get_unique_terms", lambda: reversed(mock_terms))
-        res2 = clean.prepare_default_terms()
-        assert res1 == res2
+   """prepare_default_terms should always return the same list (even for different ordering in get_unique_terms)"""
+   with monkeypatch.context() as m:
+      mock_terms = ["aaa", "bbb", "ccc"]
+      m.setattr(clean, "get_unique_terms", lambda _: mock_terms)
+      res1 = clean.prepare_default_terms()
+      m.setattr(clean, "get_unique_terms", lambda _: reversed(mock_terms))
+      res2 = clean.prepare_default_terms()
+      assert res1 == res2
 
 
 # Tests that demonstrate stuff is stripped away
@@ -100,7 +101,32 @@ terms_with_accents_tests = {
     ("term with ł incorrect spelling", "Łoś spolka z o.o", "Łoś"),
 }
 
-
 @pytest.mark.parametrize("testname, variation, expected", terms_with_accents_tests)
 def test_terms_with_accents(testname, variation, expected):
     assert basename(variation, suffix=True) == expected, "preserving cleanup of %s failed" % testname
+
+
+various_company_names = [
+   ("FI", "Oy Grundfos Pumput Ab", "Grundfos Pumput"),
+   ("FI", "Suomen Euromaster Oy", "Suomen Euromaster"),
+   ("FI", "TL Trans Oy", "TL Trans"),
+   ("FI", "Tmi Siivouspalvelu Myrberg", "Siivouspalvelu Myrberg"),
+   ("FI", "EV Finland Oy", "EV"),
+   ("SE", "EV Finland Oy", "EV Finland Oy"),
+   ("SE", "A Tavola AB", "A Tavola"),
+   ("SE", "Skultuna Reklam of Sweden", "Skultuna Reklam of Sweden"),
+   ("NO", "Myklebust Eigedomsselskap AS", "Myklebust Eigedomsselskap"),
+   ("NO", "Ab Invest I AS", "Invest I"),
+   ("NO", "NLM NAAN ANS", "NLM NAAN"),
+   ("US", "BOSCO'S AUTOMOTIVE INC", "BOSCO'S AUTOMOTIVE"),
+   ("US", "BOA Financial Consulting LLC", "BOA Financial Consulting"),
+   ("US", "Proper Pie Co., LLC", "Proper Pie"),
+   (None, "B&C ENTERPRISES, LLC", "B&C ENTERPRISES"),
+   (None, "MAX 99P LTD", "MAX 99P"),
+   (None, "Juniper Holdings S.à r.l.", "Juniper Holdings"),
+]
+
+@pytest.mark.parametrize("country, input_name, expected", various_company_names)
+def test_problematic_cases(country: Optional[str], input_name: str, expected: str):
+   cleaned_name = basename(input_name, prefix=True, country=country)
+   assert cleaned_name == expected, f"{input_name} got cleaned up to {cleaned_name} instead of {expected}"
