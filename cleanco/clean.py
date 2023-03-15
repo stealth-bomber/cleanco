@@ -15,7 +15,7 @@ import functools
 import operator
 import re
 import unicodedata
-from typing import List, Optional, Set
+from typing import List, Optional, Set, Tuple
 
 from .non_nfkd_map import NON_NFKD_MAP
 from .termdata import country_codes, country_name_by_country, terms_by_country, terms_by_type
@@ -69,7 +69,7 @@ def normalized(text):
     return remove_accents(text)
 
 
-def prepare_default_terms(country: Optional[str] = None):
+def prepare_default_terms(country: Optional[str] = None) -> List[Tuple[int, List[str]]]:
     "construct an optimized term structure for basename extraction"
     terms = get_unique_terms(country)
     nterms = normalize_terms(terms)

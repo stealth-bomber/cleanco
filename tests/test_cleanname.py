@@ -1,14 +1,14 @@
 # encoding: utf-8
 
-import pytest
 from typing import Optional
 
-from cleanco import basename
+import pytest
+
+from cleanco import basename, clean
 
 
 def test_deterministic_terms(monkeypatch):
    """prepare_default_terms should always return the same list (even for different ordering in get_unique_terms)"""
-   from cleanco import clean
    with monkeypatch.context() as m:
       mock_terms = ["aaa", "bbb", "ccc"]
       m.setattr(clean, "get_unique_terms", lambda _: mock_terms)
