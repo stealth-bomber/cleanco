@@ -127,8 +127,19 @@ def custom_basename(name, terms, suffix=True, prefix=False, middle=False, countr
     return strip_tail(" ".join(nparts))
 
 
-# convenience for most common use cases that don't parametrize base name extraction
-def basename(name, suffix=True, prefix=True, middle=False, country=None):
+def basename(name: str, suffix: bool = True, prefix: bool = True, middle: bool = False, country: Optional[str] = None) -> str:
+    """
+        Cleans the business names
+        Convenience for most common use cases that don't parametrize base name extraction
+        Inputs:
+            name: business name
+            suffix: whether to remove suffixes
+            prefix: whether to remove prefixes
+            middle: whether to remove middle terms
+            country: country code (e.g. FI) or country name (e.g. Finland)
+        Returns:
+            cleaned base version of the business name
+    """
     no_parenthesis = parenthesis_removal_rexp.sub(' ', name).strip()
     country_name = country_codes.get(country, country)
     terms = prepare_default_terms(country_name)
