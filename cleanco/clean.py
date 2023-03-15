@@ -145,4 +145,10 @@ def basename(name: str, suffix: bool = True, prefix: bool = True, middle: bool =
     terms = prepare_default_terms(country_name)
     country_names = country_name_by_country.get(country_name, [])
     intermediate = custom_basename(no_parenthesis, terms, suffix=suffix, prefix=prefix, middle=middle, country_names=country_names)
-    return custom_basename(intermediate, terms, suffix=suffix, prefix=prefix, middle=middle, country_names=country_names)
+    cleaned_name = custom_basename(intermediate, terms, suffix=suffix, prefix=prefix, middle=middle, country_names=country_names)
+
+    # Avoid cases where the name is stripped from all its words
+    if not cleaned_name:
+        return name
+
+    return cleaned_name
