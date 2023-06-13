@@ -136,6 +136,8 @@ terms_by_country = {
    'Uzbekistan': ['mchj', 'qmj', 'aj', 'oaj', 'yoaj', 'xk', 'xt', 'ok', 'uk', 'qk']
 }
 
+global_terms = {'ltd'}
+
 country_name_by_country = {
     'Finland': ['finland', 'suomi'],
     'Sweden': ['sweden', 'sverige'],

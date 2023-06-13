@@ -18,7 +18,7 @@ import unicodedata
 from typing import List, Optional, Set, Tuple
 
 from .non_nfkd_map import NON_NFKD_MAP
-from .termdata import country_codes, country_name_by_country, terms_by_country, terms_by_type
+from .termdata import country_codes, country_name_by_country, global_terms, terms_by_country, terms_by_type
 
 tail_removal_rexp = re.compile(r"[^\.\w]+$", flags=re.UNICODE)
 parenthesis_removal_rexp = re.compile(r"\s*\(.*\)\s*")
@@ -26,7 +26,7 @@ parenthesis_removal_rexp = re.compile(r"\s*\(.*\)\s*")
 
 def get_unique_terms(country: Optional[str] = None) -> Set[str]:
     if country in terms_by_country:
-        return set(terms_by_country[country])
+        return set(terms_by_country[country]).union(global_terms)
 
     "retrieve all unique terms from termdata definitions"
     ts = functools.reduce(operator.iconcat, terms_by_type.values(), [])
