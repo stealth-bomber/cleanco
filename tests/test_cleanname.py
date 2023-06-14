@@ -111,6 +111,7 @@ various_company_names = [
    ("FI", "Suomen Euromaster Oy", "Suomen Euromaster"),
    ("FI", "TL Trans Oy", "TL Trans"),
    ("FI", "Tmi Siivouspalvelu Myrberg", "Siivouspalvelu Myrberg"),
+   ("FI", "Testcompany Oy Ltd", "Testcompany"),
    ("FI", "EV Finland Oy", "EV"),
    ("SE", "EV Finland Oy", "EV Finland Oy"),
    ("SE", "A Tavola AB", "A Tavola"),
