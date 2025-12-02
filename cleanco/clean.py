@@ -54,6 +54,9 @@ finnish_branch_patterns = [
     # "filial i Finland" (Swedish)
     re.compile(r",\s*filial\s+i\s+finland", re.IGNORECASE),
     re.compile(r"\s+filial\s+i\s+finland", re.IGNORECASE),
+    # "filial Finland" (Swedish, without "i")
+    re.compile(r",\s*filial\s+finland", re.IGNORECASE),
+    re.compile(r"\s+filial\s+finland", re.IGNORECASE),
     # "filial" (Swedish, standalone after comma or space)
     re.compile(r",\s*filial\s*$", re.IGNORECASE),
     re.compile(r"\s+filial\s*$", re.IGNORECASE),

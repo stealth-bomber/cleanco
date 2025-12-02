@@ -265,6 +265,8 @@ finnish_branch_tests = [
     ("KSPT Group Oy", "KSPT Group"),
     ("LP-Group Nummela Oy", "LP-Group Nummela"),
     ("G - J Group Oy", "G - J Group"),
+    ("Weber-Stephen Nordic ApS, filial Finland", "Weber-Stephen Nordic"),
+    ("Vakuutusosakeyhtiö Henki-Fennia", "Henki-Fennia"),
     ("Keskinäinen työeläkevakuutusyhtiö Varma", "Varma"),
     ("Keskinäinen Eläkevakuutusyhtiö Ilmarinen", "Ilmarinen"),
     ("Keskinäinen Työeläkevakuutusyhtiö Elo", "Elo"),

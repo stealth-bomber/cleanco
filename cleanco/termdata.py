@@ -304,6 +304,7 @@ terms_by_country = {
         "r.f.",
         "keskinäinen",
         "vakuutusyhtiö",
+        "vakuutusosakeyhtiö",
         "eläkevakuutusyhtiö",
         "työeläkevakuutusyhtiö",
         "t:mi",
