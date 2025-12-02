@@ -657,6 +657,9 @@ def basename(
     Returns:
         cleaned base version of the business name
     """
+    # Store the original input name as a safety fallback
+    original_input_name = name
+
     # Check if we should run Finnish-specific logic
     # If country is explicitly "FI" or "Finland", run Finnish checks
     # If country is None (unknown), we'll check for indicators in the name
@@ -858,6 +861,11 @@ def basename(
     # Avoid returning empty string after final pass
     if not cleaned_name:
         return cleaned_name_before_final
+
+    # Final safety check: if we're about to return an empty string, return the original input name
+    # This prevents the cleaning logic from accidentally removing everything
+    if not cleaned_name.strip():
+        return original_input_name
 
     return cleaned_name
 
