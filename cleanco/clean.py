@@ -599,6 +599,14 @@ def custom_basename(
                 # This prevents removing "Suomi" from "Suomi Teline" etc.
                 if term_size == 1 and term_parts[0].lower() in all_country_names_lower:
                     continue
+                # Don't remove company form prefixes if followed by a country name
+                # This prevents removing "EV" from "EV Finland Oy" where "EV" is part of the company name
+                if (
+                    term_size == 1
+                    and len(normalized_parts) > term_size
+                    and normalized_parts[term_size].lower() in all_country_names_lower
+                ):
+                    continue
                 del normalized_parts[:term_size]
                 del name_parts[:term_size]
 
@@ -685,14 +693,17 @@ def basename(
         # Not Finnish - skip Finnish-specific checks entirely
         pass
 
-    # Check if "Group" appears immediately before a company form in the original name
+    # Check if "Group" appears immediately before a company form or country name in the original name
     # This check happens before branch pattern removal to see the original structure
     group_before_company_form = False
     if " group " in name_lower or name_lower.endswith(" group"):
         # Get all company form terms to check if Group is immediately followed by one
         all_terms = get_unique_terms(country_codes.get(country, country))
-        # Check if Group is immediately followed by any company form term
-        # Pattern: "Group" followed by optional punctuation/whitespace, then company form
+        # Also check if Group is followed by a country name for the specified country
+        country_name_for_group_check = country_codes.get(country, country)
+        country_names_for_group = country_name_by_country.get(country_name_for_group_check, [])
+        # Check if Group is immediately followed by any company form term or country name
+        # Pattern: "Group" followed by optional punctuation/whitespace, then company form/country name
         group_match = re.search(r"\s+group\s*([.,\s-]*)", name_lower)
         if group_match:
             after_group_start = group_match.end()
@@ -706,6 +717,14 @@ def basename(
                 if after_group_clean.startswith(term_lower):
                     group_before_company_form = True
                     break
+            # Also check if Group is followed by a country name
+            if not group_before_company_form:
+                for country_name in country_names_for_group:
+                    country_name_lower = country_name.lower().strip()
+                    # Check if the country name matches the start of what's after Group
+                    if after_group_clean.startswith(country_name_lower):
+                        group_before_company_form = True
+                        break
 
     # Remove Finnish branch patterns and check if any were matched
     # Only run if Finnish or unknown (not explicitly non-Finnish)
@@ -789,6 +808,56 @@ def basename(
     # Restore "Osuuskunta" for genitive cases
     if protect_osuuskunta:
         cleaned_name = _restore_osuuskunta(cleaned_name, original_name)
+
+    # Final pass: drop company form using ALL country-specific company suffixes
+    # This ensures any remaining country-specific suffixes are removed regardless of country
+    # Only use company form terms (not country names) - country names are handled separately
+    # Also protect "Osuuskunta" if it's in genitive case
+    if protect_osuuskunta:
+        # Protect "Osuuskunta" again before final pass
+        cleaned_name = re.sub(
+            r"\bosuuskunta\b",
+            OSUUSKUNTA_PLACEHOLDER,
+            cleaned_name,
+            flags=re.IGNORECASE,
+        )
+
+    type_terms = functools.reduce(operator.iconcat, terms_by_type.values(), [])
+    country_terms = functools.reduce(operator.iconcat, terms_by_country.values(), [])
+    company_form_terms = set(type_terms + country_terms).union(global_terms)
+    # Prepare terms for suffix and prefix removal (company forms, not country names)
+    normalized_company_terms = normalize_terms(company_form_terms)
+    company_term_parts_list = (term.split() for term in normalized_company_terms)
+    sorted_company_term_parts = sorted(
+        company_term_parts_list, key=lambda x: (-len(x), x)
+    )
+    all_company_form_terms = [
+        (len(term_parts), term_parts) for term_parts in sorted_company_term_parts
+    ]
+    # If country is provided, get that country's country names to remove
+    # Otherwise, use all country names to preserve "in X" / "of X" patterns
+    if country_name:
+        final_country_names = country_name_by_country.get(country_name, [])
+    else:
+        final_country_names = _get_all_country_names()
+    # Store cleaned_name before final pass in case final pass makes it empty
+    cleaned_name_before_final = cleaned_name
+    cleaned_name = custom_basename(
+        cleaned_name,
+        all_company_form_terms,
+        suffix=True,
+        prefix=True,
+        middle=False,
+        country_names=final_country_names,  # Remove country names for specified country, or preserve "in X" / "of X" patterns
+    )
+
+    # Restore "Osuuskunta" if it was protected
+    if protect_osuuskunta:
+        cleaned_name = _restore_osuuskunta(cleaned_name, original_name)
+
+    # Avoid returning empty string after final pass
+    if not cleaned_name:
+        return cleaned_name_before_final
 
     return cleaned_name
 

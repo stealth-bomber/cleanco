@@ -123,7 +123,7 @@ various_company_names = [
     ("FI", "Tmi Siivouspalvelu Myrberg", "Siivouspalvelu Myrberg"),
     ("FI", "Testcompany Oy Ltd", "Testcompany"),
     ("FI", "EV Finland Oy", "EV"),
-    ("SE", "EV Finland Oy", "EV Finland Oy"),
+    ("SE", "EV Finland Oy", "EV Finland"),
     ("SE", "A Tavola AB", "A Tavola"),
     ("SE", "Skultuna Reklam of Sweden", "Skultuna Reklam of Sweden"),
     ("NO", "Myklebust Eigedomsselskap AS", "Myklebust Eigedomsselskap"),
@@ -155,6 +155,7 @@ finnish_branch_tests = [
     ("Infineon Technologies Nordic AB, filial", "Infineon Technologies"),
     ("Amazon Web Services EMEA SARL, sivuliike Suomessa", "Amazon Web Services EMEA"),
     ("Mastercard Europe SA, sivuliike Suomessa", "Mastercard Europe"),
+    ("Sony Europe B.V.,Suomen sivuliike", "Sony Europe"),
     ("Fresenius Kabi AB, sivuliike Suomessa - filial i Finland", "Fresenius Kabi"),
     ("Chubb European Group SE, sivuliike Suomessa", "Chubb European Group"),
     (
@@ -314,7 +315,7 @@ finnish_branch_tests = [
 
 @pytest.mark.parametrize("input_name, expected", finnish_branch_tests)
 def test_finnish_branch_patterns(input_name: str, expected: str):
-    cleaned_name = basename(input_name, prefix=True, suffix=True, middle=True)
+    cleaned_name = basename(input_name, country="FI")
     assert cleaned_name == expected, (
         f"{input_name} got cleaned up to {cleaned_name} instead of {expected}"
     )
